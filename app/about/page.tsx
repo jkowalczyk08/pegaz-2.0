@@ -9,7 +9,7 @@ export default function About() {
           Pegaz 2.0 is a university e-learing platform based on <a href="https://pegaz.uj.edu.pl/" className="text-blue-500 hover:underline">pegaz.uj.edu.pl</a>.
         </p>
         <p>
-          It has less funcitonality, but a nicer UI 😊
+          It has less functionality, but a nicer UI 😊
         </p>
       </div>
     </main>

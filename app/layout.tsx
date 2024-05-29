@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils"
 
 import NavMenu from "../components/NavMenu";
+import AuthProvider from "./AuthProvider";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -20,16 +21,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={cn(
-          "min-h-screen bg-background font-sans antialiased",
-          fontSans.variable
-        )}
-      >
-        <NavMenu/>
-        {children}
-      </body>
-    </html>
+    <AuthProvider>
+      <html lang="en">
+        <body
+          className={cn(
+            "min-h-screen bg-background font-sans antialiased",
+            fontSans.variable
+          )}
+        >
+          <NavMenu/>
+          {children}
+        </body>
+      </html>
+    </AuthProvider>
   );
 }

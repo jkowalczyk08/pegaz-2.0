@@ -1,5 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { SignInButton, SignOutButton } from './buttons'
+import AuthCheck from './AuthCheck'
 
 export default function NavMenu() {
   return (
@@ -26,8 +28,11 @@ export default function NavMenu() {
             About
           </Link>
         </div>
-        <div className='flex items-center'>
-          UserSection
+        <div className='flex items-center space-x-2'>
+          <SignInButton></SignInButton>
+          <AuthCheck>
+            <SignOutButton/>
+          </AuthCheck>
         </div>
       </div>
     </nav>
