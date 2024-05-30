@@ -1,5 +1,5 @@
 import { auth } from '@/auth';
-import CourseCard from '@/components/CourseCard';
+import CourseCard from '@/courses/CourseCard';
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation';
 import NewCourseForm from '../newCourse/NewCourseForm';

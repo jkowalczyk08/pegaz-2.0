@@ -31,7 +31,6 @@ export async function CreateCourse(formState: FormState, formData: FormData) {
   })
 
   if (!request.success) {
-    console.log(request)
     return {
       message: 'Please enter valid course data.'
     }
@@ -49,4 +48,46 @@ export async function CreateCourse(formState: FormState, formData: FormData) {
 
   revalidatePath('/courses')
   redirect('/courses')
+}
+
+const createPageSchema = z.object({
+  name: z.string().min(1),
+  type: z.string().min(1),
+  courseId: z.string().min(1),
+  description: z.string()
+})
+
+export async function CreatePage(formState: FormState, formData: FormData) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const request = createPageSchema.safeParse({
+    name: formData.get('name') as string,
+    type: formData.get('type') as string,
+    courseId: formData.get('courseId') as string,
+    description: formData.get('description') as string
+  })
+
+  if (!request.success) {
+    return {
+      message: 'Please enter valid course data.'
+    }
+  }
+
+  const page = await prisma.page.create({
+    data: {
+      name: request.data.name,
+      type: request.data.type,
+      courseId: request.data.courseId,
+      description: request.data.description
+    }
+  })
+
+  revalidatePath(`/course/${request.data.courseId}`)
+  redirect(`/course/${request.data.courseId}`)
 }

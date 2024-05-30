@@ -14,6 +14,16 @@ model Course {
   organisationId    String  @unique
   owners            User[]  @relation("CourseOwners")
   students          User[]  @relation("CourseStudents")
+  pages             Page[]
+}
+
+model Page {
+  id                String @id @default(cuid())
+  name              String
+  type              String
+  courseId          String
+  description       String
+  course            Course @relation(fields: [courseId], references: [id])
 }
 
 // NextAuth Schema

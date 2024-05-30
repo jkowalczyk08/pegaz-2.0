@@ -18,13 +18,13 @@ export default function NavMenu() {
           </Link>
         </div>
         <div className='flex space-x-8 items-center'>
-          <Link href={'/'} className='hover:text-gray-500'>
+          <Link href={'/'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
             Home
           </Link>
-          <Link href={'/courses'} className='hover:text-gray-500'>
+          <Link href={'/courses'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
             Courses
           </Link>
-          <Link href={'/about'} className='hover:text-gray-500'>
+          <Link href={'/about'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
             About
           </Link>
         </div>

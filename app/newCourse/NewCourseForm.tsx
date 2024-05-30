@@ -2,7 +2,7 @@
 import { CreateCourse } from "@/actions/courseActions";
 import Link from "next/link";
 import { useFormState, useFormStatus } from "react-dom";
-import SubmitButton from "./SubmitButton";
+import { SubmitButton } from "@/components/buttons";
 
 const initialState = {
   message: '',
