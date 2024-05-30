@@ -36,9 +36,12 @@ const config = {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
-    },
+    }
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require('@tailwindcss/forms'),
+    require("tailwindcss-animate")
+  ],
 } satisfies Config
 
 export default config

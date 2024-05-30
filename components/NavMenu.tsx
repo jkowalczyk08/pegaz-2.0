@@ -5,7 +5,7 @@ import AuthCheck from './AuthCheck'
 
 export default function NavMenu() {
   return (
-    <nav className='py-0 px-10 border-b border-gray-300 sticky top-0'>
+    <nav className='py-0 px-10 border-b border-gray-300 backdrop-blur-md sticky top-0'>
       <div className='container flex item-center justify-between'>
         <div>
           <Link href={'/'}>
