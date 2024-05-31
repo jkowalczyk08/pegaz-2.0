@@ -91,3 +91,22 @@ export async function CreatePage(formState: FormState, formData: FormData) {
   revalidatePath(`/course/${request.data.courseId}`)
   redirect(`/course/${request.data.courseId}`)
 }
+
+export async function DeletePage(pageId: string) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const page = await prisma.page.delete({
+    where: {
+      id: pageId
+    }
+  })
+
+  revalidatePath(`/course/${page.courseId}`)
+  redirect(`/course/${page.courseId}`)
+}

@@ -1,6 +1,8 @@
 import { auth } from "@/auth";
 import { User } from "next-auth";
 import Link from "next/link";
+import { DeletePage } from "app/actions/courseActions" 
+import DeleteButton from "./DeleteButton";
 
 interface Props {
   id: string,
@@ -18,13 +20,13 @@ export default async function CourseOptions({ id, courseId } : Props) {
   }
 
   return (
-    <div className="flex items-center space-x-8">
-      <button
-        className="w-28 bg-rose-600 hover:bg-rose-700 text-white
-          font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
-          text-center">
-        Delete
-      </button>
+    <div className="mt-8 px-4 w-full border-t-2 border-t-slate-200">
+      <h3 className="my-4 text-2xl font-bold">
+        Danger Zone
+      </h3>
+      <div className="px-2 flex items-center space-x-8">
+        <DeleteButton pageId={id}></DeleteButton>
+      </div>
     </div>
   )
 }
