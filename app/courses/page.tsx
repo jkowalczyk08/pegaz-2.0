@@ -2,8 +2,6 @@ import { auth } from '@/auth';
 import CourseCard from '@/courses/CourseCard';
 import { prisma } from '@/lib/prisma'
 import { redirect } from 'next/navigation';
-import NewCourseForm from '../newCourse/NewCourseForm';
-import NewCourseSection from './NewCourseSection';
 import Link from 'next/link';
 
 export default async function Courses() {
@@ -12,12 +10,25 @@ export default async function Courses() {
     redirect('/api/auth/signin');
   }
 
-  const courses = await prisma.course.findMany();
-  const userEmail = session?.user?.email!;
-  const user = await prisma.user.findUnique({
+  if (session.user?.id == undefined) {
+    return (
+      <div className="py-16 flex items-center justify-center">
+        <h3 className="text-xl font-semibold">
+          {"Something went wrong."}
+        </h3>
+      </div>
+    )
+  }
+
+  const userId = session!.user!.id!;
+
+  const courses = await prisma.course.findMany({
     where: {
-      email: userEmail,
-    },
+      OR: [
+        { students: { some: { id: userId}}},
+        { owners: { some: { id: userId}}}
+      ]
+    }
   });
 
   return (
@@ -40,7 +51,7 @@ export default async function Courses() {
       </div>
       <div className='px-4 py-8 grid grid-cols-4 gap-4'>
         {courses.map((course) => {
-          return <CourseCard key={course.id} {...course}/>
+          return (<CourseCard key={course.id} {...course}/>)
         })}
       </div>
     </div>

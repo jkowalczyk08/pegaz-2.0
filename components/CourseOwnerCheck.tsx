@@ -1,5 +1,4 @@
 import { auth } from "@/auth";
-import { prisma } from "@/lib/prisma";
 import { User } from "next-auth";
 
 export default async function CourseOwnerCheck({ children, owners }: { children: React.ReactNode, owners: User[]}) {
