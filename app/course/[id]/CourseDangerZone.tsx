@@ -3,11 +3,10 @@ import { User } from "next-auth";
 import DeleteButton from "./DeleteButton";
 
 interface Props {
-  id: string,
   courseId: string
 }
 
-export default async function CourseOptions({ id, courseId } : Props) {
+export default async function CourseOptions({ courseId } : Props) {
   const session = await auth()
 
   if (session == null || session.user == undefined || !isOwner(session.user)) {
@@ -23,7 +22,7 @@ export default async function CourseOptions({ id, courseId } : Props) {
         Danger Zone
       </h3>
       <div className="px-2 flex items-center space-x-8">
-        <DeleteButton pageId={id}></DeleteButton>
+        <DeleteButton courseId={courseId}></DeleteButton>
       </div>
     </div>
   )

@@ -50,6 +50,25 @@ export async function CreateCourse(formState: FormState, formData: FormData) {
   redirect('/courses')
 }
 
+export async function DeleteCourse(courseId: string) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const course = await prisma.course.delete({
+    where: {
+      id: courseId
+    }
+  })
+
+  revalidatePath(`/courses`)
+  redirect(`/courses`)
+}
+
 const createPageSchema = z.object({
   name: z.string().min(1),
   type: z.string().min(1),

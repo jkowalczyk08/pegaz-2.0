@@ -23,7 +23,7 @@ model Page {
   type              String
   courseId          String
   description       String
-  course            Course @relation(fields: [courseId], references: [id])
+  course            Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 }
 
 // NextAuth Schema

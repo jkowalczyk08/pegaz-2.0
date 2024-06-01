@@ -4,6 +4,7 @@ import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import CourseOptions from "./CourseOptions";
 import Link from "next/link";
+import CourseDangerZone from "./CourseDangerZone";
 
 interface Props {
   params: {
@@ -72,6 +73,7 @@ export default async function CoursePage({ params }: Props) {
           })}
         </div>
       </div>
+      <CourseDangerZone courseId={course.id}></CourseDangerZone>
     </div>
   )
 }
