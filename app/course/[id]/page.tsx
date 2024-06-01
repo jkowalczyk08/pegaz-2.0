@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import CourseOptions from "./CourseOptions";
 import Link from "next/link";
 import CourseDangerZone from "./CourseDangerZone";
+import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 
 interface Props {
   params: {
@@ -33,7 +34,8 @@ export default async function CoursePage({ params }: Props) {
       id: params.id
     },
     include: {
-      pages: true
+      pages: true,
+      owners: true
     }
   })
   
@@ -61,7 +63,9 @@ export default async function CoursePage({ params }: Props) {
         </div>
         <div className="grow">
         </div>
-        <CourseOptions id={course.id}></CourseOptions>
+        <CourseOwnerCheck owners={course.owners}>
+          <CourseOptions id={course.id}></CourseOptions>
+        </CourseOwnerCheck>
       </div>
       <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl shadow-md">
         <h3 className="text-2xl font-medium w-full border-b border-b-slate-100">
@@ -73,7 +77,9 @@ export default async function CoursePage({ params }: Props) {
           })}
         </div>
       </div>
-      <CourseDangerZone courseId={course.id}></CourseDangerZone>
+      <CourseOwnerCheck owners={course.owners}>
+        <CourseDangerZone courseId={course.id}></CourseDangerZone>
+      </CourseOwnerCheck>
     </div>
   )
 }

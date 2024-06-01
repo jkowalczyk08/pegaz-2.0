@@ -20,18 +20,18 @@ export default async function CourseOptions({ id } : Props) {
     <div className="flex items-center space-x-8">
       <Link
         href={`/newPage/${id}`}
-        className="w-28 bg-rose-600 hover:bg-rose-700 text-white
+        className="w-32 bg-rose-600 hover:bg-rose-700 text-white
           font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
           text-center">
         Add Page
       </Link>
       <Link
-        className="w-28 border border-rose-600 text-rose-600
-        hover:bg-slate-100 font-bold py-2 px-4 rounded-2xl focus:outline-none
-        focus:shadow-outline text-center"
+        className="w-32 bg-rose-600 hover:bg-rose-700 text-white
+        font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
+        text-center"
         href={`course/${id}/settings`}
       >
-        Settings
+        Add Users
       </Link>
     </div>
   )

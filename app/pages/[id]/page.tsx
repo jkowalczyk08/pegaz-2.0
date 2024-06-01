@@ -4,6 +4,7 @@ import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import PageOptions from "./PageOptions";
 import Link from "next/link";
+import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 
 interface Props {
   params: {
@@ -32,7 +33,11 @@ export default async function CoursePage({ params }: Props) {
       id: params.id
     },
     include: {
-      course: true
+      course: {
+        include: {
+          owners: true
+        }
+      }
     }
   })
 
@@ -66,7 +71,9 @@ export default async function CoursePage({ params }: Props) {
       <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl whitespace-pre-line shadow-md">
         {page.description}
       </div>
-      <PageOptions id={page.id} courseId={page.id}></PageOptions>
+      <CourseOwnerCheck owners={page.course.owners}>
+        <PageOptions id={page.id} courseId={page.id}></PageOptions>
+      </CourseOwnerCheck>
     </div>
   )
 }
