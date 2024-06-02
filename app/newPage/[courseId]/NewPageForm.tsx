@@ -60,7 +60,7 @@ export default function NewPageForm({ courseId }: Props) {
           >
             Cancel
           </Link>
-          <SubmitButton/>
+          <SubmitButton action="Create" pendingAction="Creating"/>
         </div>
         <p aria-live="polite" className="py-4 text-red-500">
           {state?.message}

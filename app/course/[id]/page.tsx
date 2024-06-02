@@ -71,6 +71,18 @@ export default async function CoursePage({ params }: Props) {
           </div>
         </div>
         <CourseOwnerCheck owners={course.owners}>
+          <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl shadow-md">
+            <h3 className="text-2xl font-medium w-full border-b border-b-slate-100">
+              Students
+            </h3>
+            <div className="mt-2">
+              {course.students.map((student) => {
+                return <div key={student.id} className="px-4 py-2">
+                  {student.email}
+                </div>
+              })}
+            </div>
+          </div>
           <CourseDangerZone courseId={course.id}></CourseDangerZone>
         </CourseOwnerCheck>
       </div>

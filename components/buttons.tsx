@@ -3,11 +3,9 @@
 import { useSession, signIn, signOut } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { redirect } from 'next/navigation';
 
 export function SignInButton() {
   const { data: session, status } = useSession();
-  console.log(session, status);
 
   if (status === 'loading') {
     return <>...</>;
@@ -36,7 +34,12 @@ export function SignOutButton() {
 
 import { useFormStatus } from "react-dom"
 
-export function SubmitButton() {
+interface SubmitProps {
+  action: string;
+  pendingAction: string;
+}
+
+export function SubmitButton( { action, pendingAction }: SubmitProps) {
   const { pending } = useFormStatus()
   return (
     <button
@@ -44,7 +47,7 @@ export function SubmitButton() {
       type="submit"
       disabled={pending}
     >
-      {pending ? 'Creating...' : 'Create'}
+      {pending ? `${pendingAction}...` : `${action}`}
     </button>
   )
 }

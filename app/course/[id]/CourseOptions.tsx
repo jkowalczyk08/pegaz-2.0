@@ -29,7 +29,7 @@ export default async function CourseOptions({ id } : Props) {
         className="w-32 bg-rose-600 hover:bg-rose-700 text-white
         font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
         text-center"
-        href={`course/${id}/settings`}
+        href={`/addUsers/${id}/`}
       >
         Add Users
       </Link>

@@ -59,7 +59,7 @@ export default async function CoursePage({ params }: Props) {
               href={`/course/${page.courseId}`}
             >
               Back to Course
-            </Link>
+          </Link>
         </div>
         <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl whitespace-pre-line shadow-md">
           {page.description}

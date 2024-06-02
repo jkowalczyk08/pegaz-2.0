@@ -69,6 +69,80 @@ export async function DeleteCourse(courseId: string) {
   redirect(`/courses`)
 }
 
+const addUsersSchema = z.object({
+  courseId: z.string().min(1),
+  emails: z.string().transform(value => {
+      const array = value.split(';').map(item => item.trim());
+      return array;
+    }).refine(value => {
+      return Array.isArray(value) && value.every(item => typeof item === 'string');
+    }, {
+      message: 'Input must be a string of semicolon-separated strings',
+    })
+})
+
+export async function AddUsers(formState: FormState, formData: FormData) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const request = addUsersSchema.safeParse({
+    courseId: formData.get('courseId') as string,
+    emails: formData.get('emails') as string
+  })
+
+  if (!request.success) {
+    return {
+      message: request.error.message
+    }
+  }
+
+  const course = await prisma.course.findFirst({
+    where: {
+      id: request.data.courseId
+    },
+    include: {
+      students: true
+    }
+  })
+
+  const usersToAdd = await prisma.user.findMany({
+    where: {
+      email: {
+        in: request.data.emails
+      }
+    }
+  })
+
+  if (!course || !usersToAdd) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const updatedUsersSet = new Set(course.students)
+  usersToAdd.forEach(user => updatedUsersSet.add(user))
+  const updatedUsersIds = Array.from(updatedUsersSet).map(user => ({ id: user.id }))
+
+  const updatedCourse = await prisma.course.update({
+    where: {
+      id: request.data.courseId
+    },
+    data: {
+      students: {
+        set: updatedUsersIds
+      }
+    }
+  })
+
+  revalidatePath(`/course/${request.data.courseId}`)
+  redirect(`/course/${request.data.courseId}`)
+}
+
 const createPageSchema = z.object({
   name: z.string().min(1),
   type: z.string().min(1),
