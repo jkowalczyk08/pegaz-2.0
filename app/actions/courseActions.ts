@@ -147,7 +147,8 @@ const createPageSchema = z.object({
   name: z.string().min(1),
   type: z.string().min(1),
   courseId: z.string().min(1),
-  description: z.string()
+  description: z.string(),
+  deadline: z.string()
 })
 
 export async function CreatePage(formState: FormState, formData: FormData) {
@@ -163,7 +164,8 @@ export async function CreatePage(formState: FormState, formData: FormData) {
     name: formData.get('name') as string,
     type: formData.get('type') as string,
     courseId: formData.get('courseId') as string,
-    description: formData.get('description') as string
+    description: formData.get('description') as string,
+    deadline: formData.get('deadline') as string,
   })
 
   if (!request.success) {
@@ -172,12 +174,35 @@ export async function CreatePage(formState: FormState, formData: FormData) {
     }
   }
 
+  const course = await prisma.course.findFirst({
+    where: {
+      id: request.data.courseId
+    },
+    include: {
+      students: true
+    }
+  })
+
+  if (!course) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
   const page = await prisma.page.create({
     data: {
       name: request.data.name,
       type: request.data.type,
       courseId: request.data.courseId,
-      description: request.data.description
+      description: request.data.description,
+      deadline: request.data.deadline === '' ? null : request.data.deadline,
+      assignments: {
+        create: course.students.map(student => ({
+          userId: student.id,
+          status: 'pending',
+          grade: ''
+        })),
+      }
     }
   })
 

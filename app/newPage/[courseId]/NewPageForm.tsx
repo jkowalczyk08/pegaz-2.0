@@ -3,7 +3,8 @@ import { CreatePage } from "@/actions/courseActions";
 import Link from "next/link";
 import { useFormState } from "react-dom";
 import { SubmitButton } from "@/components/buttons";
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
+import Datepicker from "react-tailwindcss-datepicker"; 
 
 interface Props {
   courseId: string
@@ -15,15 +16,26 @@ const initialState = {
 
 export default function NewPageForm({ courseId }: Props) {
   const [state, formAction] = useFormState(CreatePage, initialState)
-  const [selectedType, setSelectedType] = useState('');
+  const [selectedType, setSelectedType] = useState('')
+  const [deadlineValue, setdeadlineValue] = useState({ 
+    startDate: '', 
+    endDate: '' 
+    }); 
+    
+  const handleDeadlineValueChange = (newValue: any) => {
+  console.log("newValue:", newValue)
+  console.log("type: ", typeof deadlineValue.endDate) 
+  setdeadlineValue(newValue)
+  }
 
   return (
-    <div className="px-64 w-full space-y-4">
+    <div className="px-48 w-full space-y-4">
       <h2 className="text-2xl font-bold tracking-tight">
         Create new page
       </h2>
       <form action={formAction}>
         <input type="hidden" name="courseId" value={courseId} />
+        <input type="hidden" name="deadline" value={deadlineValue.endDate} />
         <div className="flex flex-row space-x-10">
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
@@ -46,6 +58,20 @@ export default function NewPageForm({ courseId }: Props) {
               <option value="Task">Task</option>
             </select>
           </div>
+          {selectedType === 'Task' && (
+            <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="deadline">
+              Deadline
+            </label>
+            <Datepicker
+              primaryColor="rose"
+              useRange={false} 
+              asSingle={true} 
+              value={deadlineValue} 
+              onChange={handleDeadlineValueChange} 
+            /> 
+          </div>
+          )}
         </div>
         <div className="mb-6">
           <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">

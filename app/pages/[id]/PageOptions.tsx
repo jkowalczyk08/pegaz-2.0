@@ -10,7 +10,7 @@ interface Props {
 export default async function CourseOptions({ id, courseId } : Props) {
   const session = await auth()
 
-  if (session == null || session.user == undefined || !isOwner(session.user)) {
+  if (session == null || session.user == undefined) {
     return (
       <div>
       </div>
@@ -27,8 +27,4 @@ export default async function CourseOptions({ id, courseId } : Props) {
       </div>
     </div>
   )
-}
-
-function isOwner(user: User) {
-  return true;
 }

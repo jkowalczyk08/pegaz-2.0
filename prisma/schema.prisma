@@ -24,19 +24,19 @@ model Page {
   courseId          String
   description       String
   course            Course  @relation(fields: [courseId], references: [id], onDelete: Cascade)
-  // tasks             Task[]
+  assignments       Assignment[]
+  deadline          String?
 }
 
-// model Task {
-//   id                String  @id @default(cuid())
-//   userId            String
-//   user              User    @relation(fields: [userId], references: [id])
-//   pageId            String
-//   page              Page    @relation(fields: [pageId], references: [id], onDelete: Cascade) 
-//   deadline          DateTime
-//   status            String
-//   grade             String
-// }
+model Assignment {
+  id                String  @id @default(cuid())
+  userId            String
+  user              User    @relation(fields: [userId], references: [id])
+  pageId            String
+  page              Page    @relation(fields: [pageId], references: [id], onDelete: Cascade) 
+  status            String
+  grade             String
+}
 
 // NextAuth Schema
 model Account {
@@ -79,7 +79,7 @@ model User {
   sessions        Session[]
   ownedCourses    Course[]  @relation("CourseOwners")
   enrolledCourses Course[]  @relation("CourseStudents")
-  // tasks           Task[]
+  assignments     Assignment[]
 }
 
 model VerificationToken {
