@@ -1,14 +1,13 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { User } from "next-auth";
 import { redirect } from "next/navigation";
 import PageOptions from "./PageOptions";
 import Link from "next/link";
 import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 import CourseUserCheck from "@/components/CourseUserCheck";
-import { Assignment, Course, Page } from "@prisma/client";
-import { isAfterDeadline } from "@/lib/utils";
+import { Assignment } from "@prisma/client";
 import CourseStudentCheck from "@/components/CourseStudentCheck";
+import Deadline from "@/components/Deadline";
 
 interface Props {
   params: {
@@ -67,9 +66,9 @@ export default async function CoursePage({ params }: Props) {
           </div>
           <div className="flex items-center space-x-8">
             <CourseStudentCheck students={page.course.students}>
-              {page.type === 'Task' && (
+              {(page.type === 'Task' && userAssignment ) && (
                 <Link
-                  href={`/submitAssignment/${page.id}`}
+                  href={`/submitAssignment/${userAssignment.id}`}
                   className="w-48 bg-rose-600 hover:bg-rose-700 text-white
                   font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
                   text-center"
@@ -90,7 +89,7 @@ export default async function CoursePage({ params }: Props) {
           {page.description}
         </div>
         <CourseStudentCheck students={page.course.students}>
-          {page.type === 'Task' && (
+          {(page.type === 'Task' && userAssignment) && (
             <Solution userAssignment={userAssignment}/>
           )
           }
@@ -128,39 +127,11 @@ export default async function CoursePage({ params }: Props) {
   )
 }
 
-interface DeadlineProps {
-  page: Page
-}
-
-function Deadline({ page }: DeadlineProps ) {
-  const isTask = page.type === 'Task'
-  
-  if (!isTask || page.deadline == null) {
-    return <></>
-  }
-
-  return (
-    <p className={`font-normal ${isAfterDeadline(page.deadline) ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
-      {`deadline: ${page.deadline}`}
-    </p>
-  )
-}
-
 interface SolutionProps {
-  userAssignment: Assignment | undefined
+  userAssignment: Assignment
 }
 
 async function Solution({ userAssignment }: SolutionProps) {
-
-  console.log(userAssignment)
-
-  if (userAssignment == undefined) {
-    return (
-      <></>
-    )
-  }
-
-
   if (userAssignment.status === "pending") {
     return <></>
   }

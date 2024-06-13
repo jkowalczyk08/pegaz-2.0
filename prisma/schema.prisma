@@ -37,6 +37,7 @@ model Assignment {
   status            String
   grade             String
   solution          String
+  submittedAt       String?
 }
 
 // NextAuth Schema
