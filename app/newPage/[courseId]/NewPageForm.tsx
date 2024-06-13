@@ -23,8 +23,6 @@ export default function NewPageForm({ courseId }: Props) {
     }); 
     
   const handleDeadlineValueChange = (newValue: any) => {
-  console.log("newValue:", newValue)
-  console.log("type: ", typeof deadlineValue.endDate) 
   setdeadlineValue(newValue)
   }
 
