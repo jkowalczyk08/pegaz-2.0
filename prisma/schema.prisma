@@ -36,6 +36,7 @@ model Assignment {
   page              Page    @relation(fields: [pageId], references: [id], onDelete: Cascade) 
   status            String
   grade             String
+  solution          String
 }
 
 // NextAuth Schema

@@ -6,7 +6,7 @@ import PageOptions from "./PageOptions";
 import Link from "next/link";
 import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 import CourseUserCheck from "@/components/CourseUserCheck";
-import { Page } from "@prisma/client";
+import { Assignment, Course, Page } from "@prisma/client";
 import { isAfterDeadline } from "@/lib/utils";
 import CourseStudentCheck from "@/components/CourseStudentCheck";
 
@@ -51,6 +51,8 @@ export default async function CoursePage({ params }: Props) {
     )
   }
 
+  const userAssignment = page.assignments.find(a => a.userId === session.user?.id)
+
   return (
     <CourseUserCheck owners={page.course.owners} students={page.course.students}>
       <div className="py-8 px-12">
@@ -87,6 +89,12 @@ export default async function CoursePage({ params }: Props) {
         <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl whitespace-pre-line shadow-md">
           {page.description}
         </div>
+        <CourseStudentCheck students={page.course.students}>
+          {page.type === 'Task' && (
+            <Solution userAssignment={userAssignment}/>
+          )
+          }
+        </CourseStudentCheck>
         <CourseOwnerCheck owners={page.course.owners}>
           {page.type === 'Task' && (
               <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl shadow-md">
@@ -135,5 +143,39 @@ function Deadline({ page }: DeadlineProps ) {
     <p className={`font-normal ${isAfterDeadline(page.deadline) ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
       {`deadline: ${page.deadline}`}
     </p>
+  )
+}
+
+interface SolutionProps {
+  userAssignment: Assignment | undefined
+}
+
+async function Solution({ userAssignment }: SolutionProps) {
+
+  console.log(userAssignment)
+
+  if (userAssignment == undefined) {
+    return (
+      <></>
+    )
+  }
+
+
+  if (userAssignment.status === "pending") {
+    return <></>
+  }
+
+  return (
+      <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl shadow-md">
+        <h3 className="text-2xl font-medium w-full border-b border-b-slate-100">
+          Solution
+        </h3>
+        <div className="py-2">
+          {userAssignment.solution}
+        </div>
+        <div className="text-gray-500 dark:text-gray-400">
+          {userAssignment.status === 'submitted' ? 'submitted' : `grade: ${userAssignment.grade}`}
+        </div>
+      </div>
   )
 }

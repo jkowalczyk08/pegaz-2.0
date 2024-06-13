@@ -200,7 +200,8 @@ export async function CreatePage(formState: FormState, formData: FormData) {
         create: course.students.map(student => ({
           userId: student.id,
           status: 'pending',
-          grade: ''
+          grade: '',
+          solution: ''
         })),
       }
     }

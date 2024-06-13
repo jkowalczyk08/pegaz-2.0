@@ -39,9 +39,13 @@ const config = {
       },
     }
   },
+  variants: {
+    scrollbar: ['rounded']
+  },
   plugins: [
     require('@tailwindcss/forms'),
-    require("tailwindcss-animate")
+    require("tailwindcss-animate"),
+    require('tailwind-scrollbar'),
   ],
 } satisfies Config
 

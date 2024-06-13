@@ -42,7 +42,9 @@ export default async function Courses() {
         <div className='grow'></div>
         <div>
           <Link
-            className='px-3 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 focus:outline-none shadow-md'
+            className="w-36 bg-rose-600 hover:bg-rose-700 text-white
+              font-bold py-2 px-4 rounded-2xl focus:outline-none focus:shadow-outline
+              text-center"
             href={'/newCourse'}
           >
             Create new course

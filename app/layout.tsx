@@ -22,7 +22,7 @@ export default function RootLayout({
 }>) {
   return (
     <AuthProvider>
-      <html lang="en">
+      <html lang="en" className="scrollbar-thin">
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
