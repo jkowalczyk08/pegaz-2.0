@@ -82,6 +82,7 @@ model User {
   ownedCourses    Course[]  @relation("CourseOwners")
   enrolledCourses Course[]  @relation("CourseStudents")
   assignments     Assignment[]
+  isAdmin         Boolean @default(false)
 }
 
 model VerificationToken {
