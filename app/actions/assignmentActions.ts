@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from 'zod'
 
-type SubmitAssignmentFormState = {
+type FormState = {
   message: string;
 }
 
@@ -15,7 +15,7 @@ const submitAssignmentSchema = z.object({
   solution: z.string().min(1)
 })
 
-export async function submitAssignment(formState: SubmitAssignmentFormState, formData: FormData) {
+export async function submitAssignment(formState: FormState, formData: FormData) {
   const session = await auth();
   
   if (!session || !session.user) {
@@ -48,4 +48,43 @@ export async function submitAssignment(formState: SubmitAssignmentFormState, for
 
   revalidatePath(`/pages/${assignment.pageId}`)
   redirect(`/pages/${assignment.pageId}`)
+}
+
+const gradeAssignmentSchema = z.object({
+  assignmentId: z.string().min(1),
+  grade: z.string().min(1)
+})
+
+export async function gradeAssignment(formState: FormState, formData: FormData) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  const request = gradeAssignmentSchema.safeParse({
+    assignmentId: formData.get('assignmentId') as string,
+    grade: formData.get('grade') as string
+  })
+
+  if (!request.success) {
+    return {
+      message: 'Please enter valid solution.'
+    }
+  }
+
+  const assignment = await prisma.assignment.update({
+    where: {
+      id: request.data.assignmentId
+    },
+    data: {
+      grade: request.data.grade,
+      status: 'graded',
+    }
+  })
+
+  revalidatePath(`/assignments/${assignment.id}`)
+  redirect(`/assignments/${assignment.id}`)
 }

@@ -5,9 +5,9 @@ import PageOptions from "./PageOptions";
 import Link from "next/link";
 import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 import CourseUserCheck from "@/components/CourseUserCheck";
-import { Assignment } from "@prisma/client";
 import CourseStudentCheck from "@/components/CourseStudentCheck";
 import Deadline from "@/components/Deadline";
+import Solution from "@/components/Solution";
 
 interface Props {
   params: {
@@ -124,29 +124,5 @@ export default async function CoursePage({ params }: Props) {
         </CourseOwnerCheck>
       </div>
     </CourseUserCheck>
-  )
-}
-
-interface SolutionProps {
-  userAssignment: Assignment
-}
-
-async function Solution({ userAssignment }: SolutionProps) {
-  if (userAssignment.status === "pending") {
-    return <></>
-  }
-
-  return (
-      <div className="mt-8 py-4 px-8 border border-gray-200 rounded-3xl shadow-md">
-        <h3 className="text-2xl font-medium w-full border-b border-b-slate-100">
-          Solution
-        </h3>
-        <div className="py-2">
-          {userAssignment.solution}
-        </div>
-        <div className="text-gray-500 dark:text-gray-400">
-          {userAssignment.status === 'submitted' ? 'submitted' : `grade: ${userAssignment.grade}`}
-        </div>
-      </div>
   )
 }
