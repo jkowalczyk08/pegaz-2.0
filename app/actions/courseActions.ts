@@ -189,23 +189,36 @@ export async function CreatePage(formState: FormState, formData: FormData) {
     }
   }
 
-  const page = await prisma.page.create({
-    data: {
-      name: request.data.name,
-      type: request.data.type,
-      courseId: request.data.courseId,
-      description: request.data.description,
-      deadline: request.data.deadline === '' ? null : request.data.deadline,
-      assignments: {
-        create: course.students.map(student => ({
-          userId: student.id,
-          status: 'pending',
-          grade: '',
-          solution: ''
-        })),
+  console.log(request.data)
+
+  if (request.data.type === 'Note') {
+    const page = await prisma.page.create({
+      data: {
+        name: request.data.name,
+        type: request.data.type,
+        courseId: request.data.courseId,
+        description: request.data.description
       }
-    }
-  })
+    })
+  } else {
+    const page = await prisma.page.create({
+      data: {
+        name: request.data.name,
+        type: request.data.type,
+        courseId: request.data.courseId,
+        description: request.data.description,
+        deadline: request.data.deadline === '' ? null : request.data.deadline,
+        assignments: {
+          create: course.students.map(student => ({
+            userId: student.id,
+            status: 'pending',
+            grade: '',
+            solution: ''
+          })),
+        }
+      }
+    })
+  }
 
   revalidatePath(`/course/${request.data.courseId}`)
   redirect(`/course/${request.data.courseId}`)
@@ -228,4 +241,43 @@ export async function DeletePage(pageId: string) {
 
   revalidatePath(`/course/${page.courseId}`)
   redirect(`/course/${page.courseId}`)
+}
+
+export async function BumpRecentCourses(userId: string, courseId: string) {
+  const session = await auth();
+  
+  if (!session || !session.user) {
+    return {
+      message: 'Something went wrong.'
+    }
+  }
+
+  await prisma.recentCourses.upsert({
+    where: {
+      userId_courseId: {
+        userId,
+        courseId,
+      },
+    },
+    update: {
+      accessedAt: new Date(),
+    },
+    create: {
+      userId,
+      courseId,
+      accessedAt: new Date(),
+    },
+  })
+
+  await prisma.$executeRaw`
+    DELETE FROM "RecentCourses"
+    WHERE "id" IN (
+      SELECT "id"
+      FROM (
+        SELECT "id", ROW_NUMBER() OVER (PARTITION BY "userId" ORDER BY "accessedAt" DESC) AS "row_num"
+        FROM "RecentCourses"
+      ) AS subquery
+      WHERE subquery."row_num" > 3
+    )
+  `;
 }

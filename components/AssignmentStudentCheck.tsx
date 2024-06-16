@@ -9,7 +9,7 @@ export default async function AssignmentStudentCheck({ children, assignment }: {
     return <></>
   }
 
-  if (session.user == undefined || assignment.userId != session.user.id) {
+  if (session.user === undefined || assignment.userId != session.user.id) {
     return <></>
   }
 

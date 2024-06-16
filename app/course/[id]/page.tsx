@@ -8,6 +8,7 @@ import CourseDangerZone from "./CourseDangerZone";
 import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 import CourseUserCheck from "@/components/CourseUserCheck";
 import { IoDocumentTextOutline, IoClipboardOutline  } from "react-icons/io5";
+import { BumpRecentCourses } from "@/actions/courseActions";
 
 interface Props {
   params: {
@@ -17,7 +18,7 @@ interface Props {
 
 export default async function CoursePage({ params }: Props) {
   const session = await auth();
-  if (!session) {
+  if (!session || session.user === undefined || session.user.id === undefined) {
     redirect('/api/auth/signin');
   }
 
@@ -42,6 +43,8 @@ export default async function CoursePage({ params }: Props) {
       </div>
     )
   }
+
+  await BumpRecentCourses(session.user.id, course.id)
 
   return (
     <CourseUserCheck owners={course.owners} students={course.students}>

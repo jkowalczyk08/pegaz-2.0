@@ -8,6 +8,7 @@ import CourseUserCheck from "@/components/CourseUserCheck";
 import CourseStudentCheck from "@/components/CourseStudentCheck";
 import Deadline from "@/components/Deadline";
 import Solution from "@/components/Solution";
+import { BumpRecentCourses } from "@/actions/courseActions";
 
 interface Props {
   params: {
@@ -17,7 +18,7 @@ interface Props {
 
 export default async function CoursePage({ params }: Props) {
   const session = await auth();
-  if (!session) {
+  if (!session || session.user === undefined || session.user.id === undefined) {
     redirect('/api/auth/signin');
   }
 
@@ -50,6 +51,8 @@ export default async function CoursePage({ params }: Props) {
     )
   }
 
+  await BumpRecentCourses(session.user.id, page.course.id)
+
   const userAssignment = page.assignments.find(a => a.userId === session.user?.id)
 
   return (
@@ -60,7 +63,7 @@ export default async function CoursePage({ params }: Props) {
             <h2 className="text-3xl font-bold">
               {page.name}
             </h2>
-            <Deadline page={page}></Deadline>
+            <Deadline pageType={page.type} deadline={page.deadline}></Deadline>
           </div>
           <div className="grow">
           </div>

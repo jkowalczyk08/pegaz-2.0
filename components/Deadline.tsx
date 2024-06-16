@@ -2,19 +2,20 @@ import { isAfterDeadline } from "@/lib/utils"
 import { Page } from "@prisma/client"
 
 interface DeadlineProps {
-  page: Page
+  pageType: string,
+  deadline: string | null
 }
 
-export default function Deadline({ page }: DeadlineProps ) {
-  const isTask = page.type === 'Task'
+export default function Deadline({ pageType, deadline }: DeadlineProps ) {
+  const isTask = pageType === 'Task'
   
-  if (!isTask || page.deadline == null) {
+  if (!isTask || deadline == null) {
     return <></>
   }
 
   return (
-    <p className={`font-normal ${isAfterDeadline(page.deadline) ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
-      {`deadline: ${page.deadline}`}
+    <p className={`font-normal ${isAfterDeadline(deadline) ? 'text-red-500 dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>
+      {`deadline: ${deadline}`}
     </p>
   )
 }

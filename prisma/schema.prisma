@@ -15,6 +15,7 @@ model Course {
   owners            User[]  @relation("CourseOwners")
   students          User[]  @relation("CourseStudents")
   pages             Page[]
+  recentCourses RecentCourses[]
 }
 
 model Page {
@@ -38,6 +39,18 @@ model Assignment {
   grade             String
   solution          String
   submittedAt       String?
+}
+
+model RecentCourses {
+  id                String      @id @default(cuid())
+  userId            String
+  courseId          String
+  accessedAt DateTime @default(now())
+
+  user     User   @relation(fields: [userId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
+
+  @@unique([userId, courseId])
 }
 
 // NextAuth Schema
@@ -82,6 +95,7 @@ model User {
   ownedCourses    Course[]  @relation("CourseOwners")
   enrolledCourses Course[]  @relation("CourseStudents")
   assignments     Assignment[]
+  recentCourses RecentCourses[]
   isAdmin         Boolean @default(false)
 }
 
