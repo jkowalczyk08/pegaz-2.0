@@ -59,10 +59,6 @@ export default async function Home() {
     }
   })
 
-  console.log(pendingAssignments)
-  console.log(recentCourses)
-
-
   return (
     <div className='px-12 py-6'>
       <div className='flex flex-row items-center'>
@@ -100,16 +96,6 @@ export default async function Home() {
             />)
         })}
       </div>
-      {/* <div className='flex flex-row items-center'>
-        <div>
-          <h2 className='text-2xl font-bold tracking-tight'>
-            Assignments to Grade
-          </h2>
-        </div>
-      </div>
-      <div className='px-4 py-8 grid grid-cols-4 gap-4'>
-        ... List of assignments to grade (Course + task name + count of ungraded)
-      </div> */}
     </div>
   )
 }

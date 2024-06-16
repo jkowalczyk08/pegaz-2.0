@@ -36,6 +36,9 @@ export default async function CoursePage({ params }: Props) {
       assignments: {
         include: {
           user: true
+        },
+        orderBy: {
+          status: 'desc'
         }
       }
     }

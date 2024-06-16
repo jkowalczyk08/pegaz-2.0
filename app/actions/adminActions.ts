@@ -68,14 +68,6 @@ export async function createCourse() {
   })
 }
 
-// export async function enrollInACourse() {
-//   const result = await AuthorizeAdmin();
-//   if (!result) {
-//     return;
-//   }
-//   console.log('enrolling')
-// }
-
 async function AuthorizeAdmin(): Promise<boolean> {
   const session = await auth();
   

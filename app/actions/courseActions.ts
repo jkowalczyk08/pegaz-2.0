@@ -189,8 +189,6 @@ export async function CreatePage(formState: FormState, formData: FormData) {
     }
   }
 
-  console.log(request.data)
-
   if (request.data.type === 'Note') {
     const page = await prisma.page.create({
       data: {
