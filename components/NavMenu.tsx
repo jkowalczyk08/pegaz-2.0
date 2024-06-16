@@ -8,7 +8,7 @@ export default function NavMenu() {
     <nav className='py-0 px-10 border-b border-gray-300 backdrop-blur-md sticky top-0'>
       <div className='container flex item-center justify-between'>
         <div>
-          <Link href={'/'}>
+          <Link href={'/courses'}>
             <Image
               src='/logo.png'
               width={100}
@@ -18,9 +18,9 @@ export default function NavMenu() {
           </Link>
         </div>
         <div className='flex space-x-8 items-center'>
-          <Link href={'/'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
-            Home
-          </Link>
+          {/* <Link href={'/'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
+            Courses
+          </Link> */}
           <Link href={'/courses'} className='font-medium px-3 py-1 rounded-2xl hover:text-rose-800'>
             Courses
           </Link>

@@ -7,6 +7,7 @@ import Link from "next/link";
 import CourseDangerZone from "./CourseDangerZone";
 import CourseOwnerCheck from "@/components/CourseOwnerCheck";
 import CourseUserCheck from "@/components/CourseUserCheck";
+import { IoDocumentTextOutline, IoClipboardOutline  } from "react-icons/io5";
 
 interface Props {
   params: {
@@ -102,10 +103,13 @@ function PageCard({ id, name, type } : PageProps) {
         
         href={`/pages/${id}`}
       >
-        <p className="px-4 flex items-center h-10 rounded-xl
+        <div className="px-4 flex items-center space-x-2 h-10 rounded-xl
         hover:bg-slate-200">
-          {name}
-        </p>
+          {type === 'Note' ? (<IoDocumentTextOutline />) : (<IoClipboardOutline />)}
+          <p>
+            {name}
+          </p>
+        </div>
       </Link>
   )
 }
